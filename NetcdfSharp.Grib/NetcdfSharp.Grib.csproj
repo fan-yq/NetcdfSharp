@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <RootNamespace>NetcdfSharp.ucar</RootNamespace>
+    <AssemblyName>NetcdfSharp.Grib</AssemblyName>
+    <PackageId>NetcdfSharp.Grib</PackageId>
+    <IsPackable>true</IsPackable>
+    <NoWarn>$(NoWarn);CS0618;CS0169;CS0649</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="NetcdfSharp.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetcdfSharp.Core\NetcdfSharp.Core.csproj" />
+    <ProjectReference Include="..\NetcdfSharp.Udunits\NetcdfSharp.Udunits.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Pack the raw GRIB tables (~12 MB of text/XML) into one zip at build time and embed
+         just that. GribResourceReader.getInputStream() decompresses entries lazily at runtime. -->
+    <EmbeddedResource Include="$(IntermediateOutputPath)gribTables.zip">
+      <LogicalName>/resources/gribTables.zip</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <GribTableFile Include="resources\gribTables\**\*" />
+  </ItemGroup>
+
+  <Target Name="PackGribTables" BeforeTargets="PrepareResources"
+          Inputs="@(GribTableFile)" Outputs="$(IntermediateOutputPath)gribTables.zip">
+    <MakeDir Directories="$(IntermediateOutputPath)" />
+    <Exec Command="python &quot;$(MSBuildThisFileDirectory)..\tools\bufr-pack-resources.py&quot; --src &quot;$(MSBuildThisFileDirectory)resources\gribTables&quot; --out &quot;$(IntermediateOutputPath)gribTables.zip&quot;" />
+  </Target>
+
+</Project>

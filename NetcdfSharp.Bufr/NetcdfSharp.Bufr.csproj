@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <RootNamespace>NetcdfSharp.ucar</RootNamespace>
+    <AssemblyName>NetcdfSharp.Bufr</AssemblyName>
+    <PackageId>NetcdfSharp.Bufr</PackageId>
+    <IsPackable>true</IsPackable>
+    <NoWarn>$(NoWarn);CS1591;CS0618;CS0168;CS0414;CS0169;CS0649;CS0628;CS0067;CS0108;CS0114;CS0162;CS0219;CS0252;CS0253</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetcdfSharp.Core\NetcdfSharp.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Pack the raw BUFR tables (~55 MB of text) into one zip at build time and embed
+         just that. BufrTables.openStream() decompresses entries lazily at runtime. -->
+    <EmbeddedResource Include="$(IntermediateOutputPath)bufrTables.zip">
+      <LogicalName>/resources/bufrTables.zip</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <BufrTableFile Include="resources\bufrTables\**\*" />
+  </ItemGroup>
+
+  <Target Name="PackBufrTables" BeforeTargets="PrepareResources"
+          Inputs="@(BufrTableFile)" Outputs="$(IntermediateOutputPath)bufrTables.zip">
+    <MakeDir Directories="$(IntermediateOutputPath)" />
+    <Exec Command="python &quot;$(MSBuildThisFileDirectory)..\tools\bufr-pack-resources.py&quot; --src &quot;$(MSBuildThisFileDirectory)resources\bufrTables&quot; --out &quot;$(IntermediateOutputPath)bufrTables.zip&quot;" />
+  </Target>
+
+  <ItemGroup>
+    <!-- Out of scope: BUFR feature-dataset factory depends on the ucar.nc2.ft point/station
+         feature subsystem + thredds catalog, which are not part of the local-file-read goal. -->
+    <Compile Remove="ft\point\bufr\BufrFeatureDatasetFactory.cs" />
+  </ItemGroup>
+
+</Project>

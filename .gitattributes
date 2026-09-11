@@ -1,0 +1,37 @@
+# Normalize text files; keep binary data unambiguous.
+* text=auto
+
+*.cs       text
+*.csproj   text
+*.props    text
+*.targets  text
+*.slnx     text
+*.md       text
+*.txt      text
+*.py       text
+*.ps1      text
+*.yml      text
+*.yaml     text
+*.json     text
+*.xml      text
+
+*.zip      binary
+*.grb      binary
+*.grb1     binary
+*.grb2     binary
+*.grib     binary
+*.grib1    binary
+*.grib2    binary
+*.bufr     binary
+*.nc       binary
+*.nc4      binary
+*.h5       binary
+*.hdf      binary
+*.pdb      binary
+*.dll      binary
+
+# Internal / historical notes: kept in the repo but excluded from `git archive`
+# (release source exports). Also see tools/, which stay in the export.
+docs/archive     export-ignore
+docs/archive/**  export-ignore
+AGENTS.md        export-ignore

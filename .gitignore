@@ -1,0 +1,17 @@
+netcdf-java-maint-5.x
+CSharpTranslateResult
+mock-datasets
+
+# build artifacts
+**/bin/
+**/obj/
+__pycache__
+
+# benchmark output
+BenchmarkDotNet.Artifacts/
+
+# pass1 empty reports
+tools/sign-review.txt
+tools/wrapper-leftover.txt
+# NuGet packages from make pack
+artifacts/

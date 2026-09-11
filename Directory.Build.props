@@ -1,0 +1,30 @@
+<Project>
+
+  <PropertyGroup>
+    <!-- NuGet package metadata shared by all library projects.
+         Version is single-sourced here (assembly version and package version follow). -->
+    <Version>0.2</Version>
+    <PackageVersion>$(Version)</PackageVersion>
+    <Authors>fan-yq</Authors>
+    <Company>NetcdfSharp</Company>
+    <Product>NetcdfSharp</Product>
+    <Description>NetcdfSharp - C# port of the netcdf-java (maint-5.x) reading stack. Local-file reading of netCDF-3, netCDF-4 (HDF5), HDF4, HDF5, GRIB1/2 and BUFR.</Description>
+    <PackageTags>netcdf;hdf5;hdf4;grib;grib1;grib2;bufr;meteorology;oceanography;ucar</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/fan-yq/NetcdfSharp</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/fan-yq/NetcdfSharp</PackageProjectUrl>
+    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <!-- Tests project opts out; libraries get a package id per project. -->
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsPackable)' != 'false'">
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)artifacts\</PackageOutputPath>
+  </PropertyGroup>
+
+</Project>

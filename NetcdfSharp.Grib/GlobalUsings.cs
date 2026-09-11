@@ -1,0 +1,82 @@
+// Global type aliases so translated code can resolve java.* and guava shim types
+// from any namespace, without per-file `using X = ...` aliases (which fail for generic types).
+// Mirrors NetcdfSharp.Core/GlobalUsings.cs; the shim types live in the Core assembly.
+
+// guava namespaces (so bare ImmutableList, CharMatcher, etc. resolve)
+global using System.Linq;
+global using NetcdfSharp.com.google.common.@base;
+global using NetcdfSharp.com.google.common.cache;
+global using NetcdfSharp.com.google.common.collect;
+global using NetcdfSharp.com.google.common.escape;
+global using NetcdfSharp.com.google.common.math;
+global using NetcdfSharp.com.google.common.primitives;
+global using NetcdfSharp.java.lang;
+global using NetcdfSharp.java.nio.channels;
+global using NetcdfSharp.java.util;
+global using NetcdfSharp.ucar.ma2;
+global using NetcdfSharp.ucar.nc2.util;
+global using Arrays = NetcdfSharp.java.util.Arrays;
+global using AtomicInteger = NetcdfSharp.java.util.concurrent.atomic.AtomicInteger;
+global using AtomicLong = NetcdfSharp.java.util.concurrent.atomic.AtomicLong;
+global using BufferedInputStream = NetcdfSharp.java.io.BufferedInputStream;
+global using BufferedOutputStream = NetcdfSharp.java.io.BufferedOutputStream;
+global using ByteArrayInputStream = NetcdfSharp.java.io.ByteArrayInputStream;
+// java.* type aliases
+global using ByteBuffer = NetcdfSharp.java.nio.ByteBuffer;
+global using ByteOrder = NetcdfSharp.java.nio.ByteOrder;
+global using CharBuffer = NetcdfSharp.java.nio.CharBuffer;
+global using Charset = System.Text.Encoding;
+global using Chunk = NetcdfSharp.ucar.nc2.iosp.Layout.Chunk;
+global using Closeable = NetcdfSharp.java.io.Closeable;
+global using Collections = NetcdfSharp.java.util.Collections;
+global using Convert = System.Convert;
+global using CRC32 = NetcdfSharp.java.util.zip.CRC32;
+global using DataInput = NetcdfSharp.java.io.DataInput;
+global using DataInputStream = NetcdfSharp.java.io.DataInputStream;
+global using DataOutput = NetcdfSharp.java.io.DataOutput;
+global using DataOutputStream = NetcdfSharp.java.io.DataOutputStream;
+global using DataTypes = NetcdfSharp.ucar.ma2.DataTypes;
+global using DateTimeHelper = NetcdfSharp.unidata.util.DateTimeHelper;
+global using Deflater = NetcdfSharp.java.util.zip.Deflater;
+global using DoubleBuffer = NetcdfSharp.java.nio.DoubleBuffer;
+global using Duration = NetcdfSharp.java.time.Duration;
+global using EOFException = System.IO.EndOfStreamException;
+// java.io / java.nio / java.util / java.net / NetcdfSharp.java.util.concurrent.atomic type aliases
+global using File = NetcdfSharp.java.io.File;
+global using FileChannel = NetcdfSharp.java.nio.channels.FileChannel;
+global using FilterInputStream = NetcdfSharp.java.io.FilterInputStream;
+global using FloatBuffer = NetcdfSharp.java.nio.FloatBuffer;
+global using Formatter = NetcdfSharp.java.util.Formatter;
+global using GregorianCalendar = NetcdfSharp.java.util.GregorianCalendar;
+global using HttpURLConnection = NetcdfSharp.java.net.HttpURLConnection;
+global using InputStream = NetcdfSharp.java.io.InputStream;
+global using IntBuffer = NetcdfSharp.java.nio.IntBuffer;
+global using InterruptedException = System.OperationCanceledException;
+global using IOException = System.IO.IOException;
+global using JavaLangCompat = NetcdfSharp.java.lang.JavaLangCompat;
+global using JSystem = NetcdfSharp.java.lang.JSystem;
+global using JTimeZone = NetcdfSharp.java.util.JTimeZone;
+global using Logger = NetcdfSharp.org.slf4j.Logger;
+global using LoggerFactory = NetcdfSharp.org.slf4j.LoggerFactory;
+global using LongBuffer = NetcdfSharp.java.nio.LongBuffer;
+global using MalformedURLException = NetcdfSharp.java.net.MalformedURLException;
+global using ObjectInputStream = NetcdfSharp.java.io.ObjectInputStream;
+global using ObjectOutputStream = NetcdfSharp.java.io.ObjectOutputStream;
+global using ParseException = NetcdfSharp.java.text.ParseException;
+global using PrintStream = NetcdfSharp.java.io.PrintStream;
+global using PrintWriter = NetcdfSharp.java.io.PrintWriter;
+global using RandomAccessFile = NetcdfSharp.ucar.unidata.io.RandomAccessFile;
+global using Reader = NetcdfSharp.java.io.Reader;
+global using ServiceLoader = NetcdfSharp.java.util.ServiceLoader;
+global using ShortBuffer = NetcdfSharp.java.nio.ShortBuffer;
+global using SimpleDateFormat = NetcdfSharp.java.text.SimpleDateFormat;
+global using SortGroup = NetcdfSharp.ucar.nc2.iosp.IOServiceProvider.SortGroup;
+global using StackTraceElement = NetcdfSharp.java.lang.StackTraceElement;
+global using StringHelper = NetcdfSharp.java.lang.StringHelper;
+global using StringTokenizer = NetcdfSharp.java.util.StringTokenizer;
+global using SummaryStatistics = NetcdfSharp.org.apache.commons.math3.stat.descriptive.SummaryStatistics;
+global using URI = NetcdfSharp.java.net.URI;
+global using URL = NetcdfSharp.java.net.URL;
+global using URLConnection = NetcdfSharp.java.net.URLConnection;
+global using WritableByteChannel = NetcdfSharp.java.nio.channels.WritableByteChannel;
+global using Writer = NetcdfSharp.java.io.Writer;

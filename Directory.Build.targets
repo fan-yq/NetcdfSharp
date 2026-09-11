@@ -1,0 +1,12 @@
+<Project>
+
+  <!-- Pack the shared docs into every package. Imported after the project body, so
+       IsPackable already reflects the per-project override. -->
+  <ItemGroup Condition="'$(IsPackable)' == 'true'">
+    <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="$(MSBuildThisFileDirectory)LICENSE" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="$(MSBuildThisFileDirectory)THIRD_PARTY_NOTICES.md" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="$(MSBuildThisFileDirectory)licenses\**\*" Pack="true" PackagePath="licenses\" Visible="false" />
+  </ItemGroup>
+
+</Project>

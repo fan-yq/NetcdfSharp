@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="NetcdfSharp.Bufr/NetcdfSharp.Bufr.csproj" />
+  <Project Path="NetcdfSharp.Core/NetcdfSharp.Core.csproj" />
+  <Project Path="NetcdfSharp.Grib/NetcdfSharp.Grib.csproj" />
+  <Project Path="NetcdfSharp.Tests/NetcdfSharp.Tests.csproj" />
+  <Project Path="NetcdfSharp.Udunits/NetcdfSharp.Udunits.csproj" />
+</Solution>
