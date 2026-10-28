@@ -133,7 +133,7 @@ namespace NetcdfSharp.ucar.nc2.iosp.bufr.tables
 		string filename = BufrTables.RESOURCE_PATH + CodeFlagFilename;
 		try
 		{
-				using (Stream @is = NetcdfSharp.ucar.nc2.util.IO.getFileResource(filename))
+				using (Stream @is = BufrTables.openStream("resource:" + filename))
 				{
 			  SAXBuilder builder = new SAXBuilder();
 			  builder.setExpandEntities(false);
@@ -147,7 +147,8 @@ namespace NetcdfSharp.ucar.nc2.iosp.bufr.tables
 				string desc = elem.getChildText("ElementName_en");
 
 				short fxy = Descriptor.getFxy2(fxyS);
-				CodeFlagTables ct = table[fxy];
+				CodeFlagTables ct;
+				table.TryGetValue(fxy, out ct);
 				if (ct == null)
 				{
 				  ct = new CodeFlagTables(fxy, desc);

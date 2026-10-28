@@ -48,7 +48,7 @@ namespace NetcdfSharp.ucar.nc2.iosp.bufr.tables
 		string filename = BufrTables.RESOURCE_PATH + TABLEA_FILENAME;
 		try
 		{
-				using (Stream @is = NetcdfSharp.ucar.nc2.util.IO.getFileResource(filename))
+				using (Stream @is = BufrTables.openStream("resource:" + filename))
 				{
 
 			  Dictionary<int, Descriptor> map = new Dictionary<int, Descriptor>(100);
@@ -113,7 +113,8 @@ namespace NetcdfSharp.ucar.nc2.iosp.bufr.tables
 		{
 		  init();
 		}
-		Descriptor descriptor = tableA[cat];
+		Descriptor descriptor;
+		tableA.TryGetValue(cat, out descriptor);
 		return descriptor != null ? descriptor.Description : "Unknown category=" + cat;
 	  }
 
@@ -128,7 +129,8 @@ namespace NetcdfSharp.ucar.nc2.iosp.bufr.tables
 		{
 		  init();
 		}
-		Descriptor descriptor = tableA[cat];
+		Descriptor descriptor;
+		tableA.TryGetValue(cat, out descriptor);
 		return descriptor != null ? descriptor.Name : "obs_" + cat;
 	  }
 

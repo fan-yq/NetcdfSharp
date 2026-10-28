@@ -732,6 +732,9 @@ namespace NetcdfSharp.ucar.nc2.grib.collection
 				this.ndups = gcVar.ndups;
 				this.nrecords = gcVar.nrecords;
 				this.nmissing = gcVar.nmissing;
+
+				// Single data-file collections carry the record positions in memory (no .gbx9 index).
+				this.sa = gcVar.inMemoryRecords;
 			}
 
 			public virtual void readRecords()

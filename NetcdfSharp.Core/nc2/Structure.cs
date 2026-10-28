@@ -328,7 +328,8 @@ namespace NetcdfSharp.ucar.nc2
 			{
 				return null;
 			}
-			return memberHash[shortName];
+			Variable result;
+			return memberHash.TryGetValue(shortName, out result) ? result : null;
 		}
 
 		/// <summary>

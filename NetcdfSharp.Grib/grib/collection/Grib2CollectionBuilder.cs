@@ -1,4 +1,4 @@
-﻿// ====================================================================================================
+// ====================================================================================================
 // Produced by the Free Edition of Java to C# Converter.
 // Purchase a Premium Edition license at:
 // https://www.tangiblesoftwaresolutions.com/order/order-java-to-csharp.html
@@ -150,7 +150,8 @@ namespace NetcdfSharp.ucar.nc2.grib.collection
 			  long runtime = singleRuntime ? runtimeDate.Millis : 0; // separate Groups for each runtime, if
 																		  // singleRuntime is true
 			  GroupAndRuntime gar = new GroupAndRuntime(hashCode, runtime);
-			  Grib2CollectionWriter.Group g = gdsMap[gar];
+			  Grib2CollectionWriter.Group g;
+			  gdsMap.TryGetValue(gar, out g);
 			  if (g == null)
 			  {
 				g = new Grib2CollectionWriter.Group(gr.GDSsection, hashCode, runtimeDate);
@@ -325,7 +326,8 @@ namespace NetcdfSharp.ucar.nc2.grib.collection
 			  outerInstance.logger.warn("Exception on record ", t);
 			  continue; // keep going
 			}
-			VariableBag bag = vbHash[gv];
+			VariableBag bag;
+			vbHash.TryGetValue(gv, out bag);
 			if (bag == null)
 			{
 			  bag = new VariableBag(gr, gv);

@@ -5,9 +5,9 @@
 // NetcdfFiles.open can discover BufrIosp2 via the ServiceLoader.
 
 
-using System;
-using System.IO;
+using NetcdfSharp.ucar.nc2;
 using NetcdfSharp.ucar.nc2.iosp.bufr;
+using NetcdfSharp.ucar.tests;
 using NetcdfSharp.ucar.unidata.io;
 using Xunit;
 
@@ -20,29 +20,19 @@ namespace NetcdfSharp.ucar.nc2.iosp.bufr
 	/// </summary>
 	public class BufrModuleReadTests
 	{
-		private static string MockPath(string name)
+		private const string BufrFile = "test_bufr.bufr";
+
+		private static string BufrPath()
 		{
-			string dir = AppContext.BaseDirectory;
-			while (dir != null)
-			{
-				string candidate = Path.Combine(dir, "mock-datasets");
-				if (Directory.Exists(candidate))
-				{
-					return Path.Combine(candidate, name);
-				}
-				dir = Path.GetDirectoryName(dir);
-			}
-			return null;
+			Assert.True(MockDataSupport.HasData(BufrFile),
+				"missing mock-datasets/" + BufrFile + "; run python generate_mock_data.py (requires eccodes)");
+			return MockDataSupport.DataPath(BufrFile);
 		}
 
 		[Fact]
 		public void ScanMockBufrMessage()
 		{
-			string fp = MockPath("test_bufr.bufr");
-			if (fp == null || !File.Exists(fp))
-			{
-				return; // run generate_mock_data.py
-			}
+			string fp = BufrPath();
 
 			RandomAccessFile raf = new RandomAccessFile(fp, "r");
 			try
@@ -76,11 +66,7 @@ namespace NetcdfSharp.ucar.nc2.iosp.bufr
 		[Fact]
 		public void OpenBufrFile()
 		{
-			string fp = MockPath("test_bufr.bufr");
-			if (fp == null || !File.Exists(fp))
-			{
-				return;
-			}
+			string fp = BufrPath();
 
 			// referencing the Bufr types forces the assembly load so the ServiceLoader
 			// (and therefore NetcdfFiles.open) can discover BufrIosp2
@@ -94,6 +80,13 @@ namespace NetcdfSharp.ucar.nc2.iosp.bufr
 			{
 				raf.close();
 			}
+
+			using NetcdfFile ncf = NetcdfFiles.open(fp);
+			Structure obs = Assert.IsAssignableFrom<Structure>(ncf.findVariable(BufrIosp2.obsRecordName));
+			Assert.NotEmpty(ncf.Variables);
+			Assert.True(obs.NumberOfMemberVariables > 0, "BUFR table descriptors were not expanded");
+			Assert.NotNull(obs.findVariable("PRESSURE"));
+			Assert.NotNull(obs.findVariable("TEMPERATURE_DRY-BULB_TEMPERATURE"));
 		}
 	}
 }

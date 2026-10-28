@@ -1743,7 +1743,7 @@ namespace NetcdfSharp.ucar.nc2.iosp.bufr.tables
 		// first number
 		if (line.Length > 6)
 		{
-		  string[] flds = {line.Substring(0, 6), line.Substring(6, 9), line.Substring(9)};
+		  string[] flds = {line.Substring(0, 6), line.Substring(6, 3), line.Substring(9)};
 		  fxys = flds[0].Trim();
 		  int fxy0 = int.Parse(fxys);
 		  int y0 = fxy0 % 1000;

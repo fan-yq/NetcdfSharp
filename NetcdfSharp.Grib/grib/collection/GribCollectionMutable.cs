@@ -607,6 +607,9 @@ namespace NetcdfSharp.ucar.nc2.grib.collection
 			public int recordsLen;
 			public object gribVariable; // use this to test for object equality
 
+			// Non-index (single data file) collections keep the record positions in memory instead of a .gbx9 file.
+			internal NetcdfSharp.ucar.nc2.grib.coord.SparseArray<GribCollectionImmutable.Record> inMemoryRecords;
+
 			internal IList<int> coordIndex; // indexes into group.coords
 
 			// derived from pds
