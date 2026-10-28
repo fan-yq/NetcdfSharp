@@ -493,43 +493,45 @@ def create_grib_test_files(base_dir):
     try:
         import eccodes
 
-        def write_grib(filename, edition):
+        def write_grib(filename, edition, runtimes=((20240101, 1200),)):
             filepath = os.path.join(base_dir, filename)
             print(f"\n创建GRIB{edition}测试文件: {filepath}")
 
             try:
                 sample = "regular_ll_sfc_grib1" if edition == 1 else "regular_ll_sfc_grib2"
-                handle = eccodes.codes_grib_new_from_samples(sample)
 
-                eccodes.codes_set(handle, "centre", "ecmf")
-                eccodes.codes_set(handle, "paramId", 130)
-                eccodes.codes_set(handle, "shortName", "t")
+                for i, (data_date, data_time) in enumerate(runtimes):
+                    handle = eccodes.codes_grib_new_from_samples(sample)
 
-                eccodes.codes_set(handle, "Ni", 20)
-                eccodes.codes_set(handle, "Nj", 15)
-                eccodes.codes_set(handle, "latitudeOfFirstGridPointInDegrees", 45.0)
-                eccodes.codes_set(handle, "longitudeOfFirstGridPointInDegrees", -10.0)
-                eccodes.codes_set(handle, "latitudeOfLastGridPointInDegrees", 55.0)
-                eccodes.codes_set(handle, "longitudeOfLastGridPointInDegrees", 10.0)
-                eccodes.codes_set(handle, "iDirectionIncrementInDegrees", 1.0)
-                eccodes.codes_set(handle, "jDirectionIncrementInDegrees", 1.0)
+                    eccodes.codes_set(handle, "centre", "ecmf")
+                    eccodes.codes_set(handle, "paramId", 130)
+                    eccodes.codes_set(handle, "shortName", "t")
 
-                eccodes.codes_set(handle, "dataDate", 20240101)
-                eccodes.codes_set(handle, "dataTime", 1200)
-                eccodes.codes_set(handle, "stepType", "instant")
+                    eccodes.codes_set(handle, "Ni", 20)
+                    eccodes.codes_set(handle, "Nj", 15)
+                    eccodes.codes_set(handle, "latitudeOfFirstGridPointInDegrees", 45.0)
+                    eccodes.codes_set(handle, "longitudeOfFirstGridPointInDegrees", -10.0)
+                    eccodes.codes_set(handle, "latitudeOfLastGridPointInDegrees", 55.0)
+                    eccodes.codes_set(handle, "longitudeOfLastGridPointInDegrees", 10.0)
+                    eccodes.codes_set(handle, "iDirectionIncrementInDegrees", 1.0)
+                    eccodes.codes_set(handle, "jDirectionIncrementInDegrees", 1.0)
 
-                if edition == 2:
-                    eccodes.codes_set(handle, "typeOfLevel", "surface")
-                    eccodes.codes_set(handle, "level", 0)
-                    eccodes.codes_set(handle, "packingType", "grid_simple")
+                    eccodes.codes_set(handle, "dataDate", data_date)
+                    eccodes.codes_set(handle, "dataTime", data_time)
+                    eccodes.codes_set(handle, "stepType", "instant")
 
-                data = 273.15 + 20 * np.random.randn(15 * 20)
-                data = np.clip(data, 233.15, 323.15)
-                eccodes.codes_set_values(handle, data)
+                    if edition == 2:
+                        eccodes.codes_set(handle, "typeOfLevel", "surface")
+                        eccodes.codes_set(handle, "level", 0)
+                        eccodes.codes_set(handle, "packingType", "grid_simple")
 
-                with open(filepath, "wb") as f:
-                    eccodes.codes_write(handle, f)
-                eccodes.codes_release(handle)
+                    data = 273.15 + 20 * np.random.randn(15 * 20) + i
+                    data = np.clip(data, 233.15, 323.15)
+                    eccodes.codes_set_values(handle, data)
+
+                    with open(filepath, "wb" if i == 0 else "ab") as f:
+                        eccodes.codes_write(handle, f)
+                    eccodes.codes_release(handle)
 
                 print(f"✓ GRIB{edition}文件创建完成: {filepath}")
 
@@ -538,6 +540,8 @@ def create_grib_test_files(base_dir):
 
         write_grib("test_grib1.grb", 1)
         write_grib("test_grib2.grb2", 2)
+        write_grib("test_grib1_multi_runtime.grb", 1, ((20240101, 0), (20240102, 0)))
+        write_grib("test_grib2_multi_runtime.grb2", 2, ((20240101, 0), (20240102, 0)))
 
     except ImportError:
         print("✗ GRIB文件创建失败: 需要安装eccodes")
@@ -815,6 +819,8 @@ def print_summary():
         "test_hdf4.hdf - HDF4 (如果pyhdf可用)",
         "test_grib1.grb - GRIB1 (如果eccodes可用)",
         "test_grib2.grb2 - GRIB2 (如果eccodes可用)",
+        "test_grib1_multi_runtime.grb - GRIB1 多 runtime (如果eccodes可用)",
+        "test_grib2_multi_runtime.grb2 - GRIB2 多 runtime (如果eccodes可用)",
         "test_bufr.bufr - BUFR (如果eccodes可用)",
         "test_xarray_netcdf4.nc - xarray生成的netCDF4",
         "test_xarray_netcdf3.nc - xarray生成的netCDF3",

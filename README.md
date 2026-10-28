@@ -19,7 +19,7 @@ also implemented.
 | `NetcdfSharp.Udunits` | 0 warnings | full `ucar.units` port |
 | `NetcdfSharp.Grib` | 0 warnings | GRIB1/GRIB2 decoding; WMO/ECMWF/NCEP/... tables embedded as a build-time zip |
 | `NetcdfSharp.Bufr` | 0 warnings | BUFR reading; WMO/tables embedded as a build-time zip |
-| `NetcdfSharp.Tests` | 340 passing\* | xUnit |
+| `NetcdfSharp.Tests` | 344 passing\* | xUnit |
 
 \* The suite skips tests whose sample data is absent (generated mock files under
 `mock-datasets/`, or netcdf-java sample files). See [Build & test](#build--test).
@@ -78,9 +78,23 @@ Console.WriteLine($"first = {data.getDouble(0)}");
 // hyperslab read
 NcArray slab = temp.read(new int[] { 0, 0, 0 }, new int[] { 1, 10, 10 });
 
+// copy to a regular C# rectangular array (same rank and shape, row-major order)
+double[,] grid = (double[,])data.copyToCSharpArray();
+Console.WriteLine($"grid[0,0] = {grid[0, 0]}");
+
+// wrap a C# rectangular array as an NcArray
+NcArray wrapped = NcArray.makeFromCSharpArray(grid);
+
 // GRIB2 works the same way through IOSP discovery:
 using NetcdfFile grib = NetcdfFiles.open("forecast.grib2");
 ```
+
+### Nullability
+
+This is a Java-to-C# port, so nullable reference types are disabled and Java reference
+semantics are preserved. Many APIs can return `null` where Java returns `null`; for
+example `findVariable("missing")` returns `null` rather than throwing. Check returned
+objects before using them (`if (v != null)`, `?.`, or explicit validation).
 
 ## Architecture
 

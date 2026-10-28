@@ -17,7 +17,7 @@ GRIB1 / GRIB2 / BUFR** 的**本地文件读取**；**netCDF-3 写入**亦已实�
 | `NetcdfSharp.Udunits` | ✅ 0 警告 | `ucar.units` 完整移植 |
 | `NetcdfSharp.Grib` | ✅ 0 警告 | GRIB1/2 解码；WMO/ECMWF/NCEP 等表以 build 期 zip 内嵌 |
 | `NetcdfSharp.Bufr` | ✅ 0 警告 | BUFR 读取；表以 build 期 zip 内嵌 |
-| `NetcdfSharp.Tests` | ✅ 340 通过\* | xUnit |
+| `NetcdfSharp.Tests` | ✅ 344 通过\* | xUnit |
 
 \* 缺少样本数据（`mock-datasets/` 生成文件或 netcdf-java 样本）的测试会自动跳过。
 
@@ -71,9 +71,23 @@ Console.WriteLine($"first = {data.getDouble(0)}");
 // 子集（hyperslab）
 NcArray slab = temp.read(new int[] { 0, 0, 0 }, new int[] { 1, 10, 10 });
 
+// 转为普通 C# 矩形数组（保持维数和形状，行优先顺序）
+double[,] grid = (double[,])data.copyToCSharpArray();
+Console.WriteLine($"grid[0,0] = {grid[0, 0]}");
+
+// 将 C# 矩形数组包装为 NcArray
+NcArray wrapped = NcArray.makeFromCSharpArray(grid);
+
 // GRIB2 同样经 IOSP 自动识别打开
 using NetcdfFile grib = NetcdfFiles.open("forecast.grib2");
 ```
+
+### 可空性（null）
+
+本项目由 Java 代码翻译而来，未启用 C# 可空引用类型，并保留了 Java 的引用语义。
+很多 API 在 Java 返回 `null` 的地方仍会返回 `null`，例如
+`findVariable("missing")` 会返回 `null` 而不是抛异常。使用返回值前请先判断
+（`if (v != null)`、`?.` 或显式校验）。
 
 ## 架构与翻译方法
 

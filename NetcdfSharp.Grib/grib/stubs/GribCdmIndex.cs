@@ -89,7 +89,7 @@ namespace NetcdfSharp.ucar.nc2.grib.collection
 
 			FeatureCollectionConfig config = gribConfig ?? new FeatureCollectionConfig();
 			Formatter log = errlog ?? new Formatter();
-			string name = System.IO.Path.GetFileNameWithoutExtension(wantFile.Path);
+			string name = wantFile.Name;
 
 			MCollection dcm = new SingleFileCollection(wantFile, config);
 			IList<MFile> allFiles = new List<MFile>();
@@ -98,7 +98,7 @@ namespace NetcdfSharp.ucar.nc2.grib.collection
 			if (isGrib1)
 			{
 				Grib1CollectionBuilder builder = new Grib1CollectionBuilder(name, dcm, logger);
-				groups = builder.makeGroups(allFiles, true, log);
+				groups = builder.makeGroups(allFiles, false, log);
 				if (groups.Count == 0)
 				{
 					return null;
@@ -108,7 +108,7 @@ namespace NetcdfSharp.ucar.nc2.grib.collection
 			else
 			{
 				Grib2CollectionBuilder builder = new Grib2CollectionBuilder(name, dcm, logger);
-				groups = builder.makeGroups(allFiles, true, log);
+				groups = builder.makeGroups(allFiles, false, log);
 				if (groups.Count == 0)
 				{
 					return null;
@@ -388,7 +388,7 @@ namespace NetcdfSharp.ucar.nc2.grib.collection
 
 			public string getIndexFilename(string suffix)
 			{
-				return System.IO.Path.Combine(Root, System.IO.Path.GetFileNameWithoutExtension(file.Path) + suffix);
+				return System.IO.Path.Combine(Root, file.Name + suffix);
 			}
 		}
 

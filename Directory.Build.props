@@ -3,7 +3,7 @@
   <PropertyGroup>
     <!-- NuGet package metadata shared by all library projects.
          Version is single-sourced here (assembly version and package version follow). -->
-    <Version>0.2</Version>
+    <Version>0.2.1</Version>
     <PackageVersion>$(Version)</PackageVersion>
     <Authors>fan-yq</Authors>
     <Company>NetcdfSharp</Company>
